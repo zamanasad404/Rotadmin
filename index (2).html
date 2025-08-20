@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <title>Team Roster | Novare Enterprises</title>
+  <meta name="description" content="Create and share weekly team rosters. Admin adds staff and shifts; team views published rota. PWA works offline.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">🗓️</div>
+      <div class="brand-text">
+        <strong>Novare&nbsp;Enterprises</strong>
+        <span class="app-name">Team Roster</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="btnInstall" class="btn primary" hidden>Install</button>
+      <span id="offlineBadge" class="badge" hidden>Offline</span>
+      <div class="role-switch">
+        <label for="roleSelect" class="sr-only">Role</label>
+        <select id="roleSelect">
+          <option value="admin">Admin</option>
+          <option value="viewer">Viewer</option>
+        </select>
+      </div>
+      <div class="menu">
+        <button id="menuBtn" class="btn ghost" aria-haspopup="true" aria-expanded="false">☰</button>
+        <ul id="menuList" class="menu-list" hidden>
+          <li><button id="btnPrint">Print rota</button></li>
+          <li><button id="btnShare">Send via WhatsApp</button></li>
+          <li><button id="btnDownload">Download as PDF</button></li>
+          <li><button id="btnExport">Export JSON</button></li>
+          <li><button id="btnImport">Import JSON</button></li>
+          <li><button id="btnShareLink">Copy View Link</button></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="onboarding" class="card subtle" aria-live="polite">
+      <div class="progress">
+        <div id="progressBar" class="bar"></div>
+      </div>
+      <p><strong>Setup tips:</strong> add your team, define working patterns, then publish a viewer link. You can install this app and use it offline.</p>
+      <button id="dismissOnboarding" class="btn tiny">Got it</button>
+    </section>
+
+    <section id="adminPanel" class="grid two">
+      <div class="card">
+        <h2>Team</h2>
+        <form id="addEmployeeForm" class="row">
+          <input id="empName" type="text" placeholder="Employee name" required aria-label="Employee name">
+          <input id="empRole" type="text" placeholder="Role (optional)" aria-label="Role">
+          <button class="btn" type="submit">Add</button>
+        </form>
+        <div id="premiumNotice" class="notice warning" hidden>
+          Free plan supports up to 15 team members. To add more, upgrade to Premium (£50/month).
+          <div class="paywall-actions">
+            <a class="btn primary" href="https://www.paypal.com/ncp/payment/EXAMPLE_SUBSCRIPTION" target="_blank" rel="noopener">Upgrade</a>
+          </div>
+        </div>
+        <ul id="employeeList" class="list"></ul>
+      </div>
+      <div class="card">
+        <h2>Patterns & Shifts</h2>
+        <form id="addPatternForm" class="row">
+          <input id="patName" type="text" placeholder="Pattern name (e.g., Early)" required>
+          <input id="patTime" type="text" placeholder="Time (e.g., 08:00–16:00)" required>
+          <button class="btn" type="submit">Add</button>
+        </form>
+        <ul id="patternList" class="list"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row between">
+        <h2 id="weekLabel">Week of <span></span></h2>
+        <div class="row gap">
+          <button id="prevWeek" class="btn ghost" title="Previous week">◀</button>
+          <button id="nextWeek" class="btn ghost" title="Next week">▶</button>
+          <button id="todayWeek" class="btn tiny">This week</button>
+          <button id="publishBtn" class="btn">Publish viewer link</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="rosterTable" class="roster">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="viewerInfo" class="card subtle" hidden>
+      <p>This is a read‑only view. Ask your admin for edit access.</p>
+    </section>
+
+    <dialog id="modal">
+      <form method="dialog">
+        <header class="row between">
+          <h3 id="modalTitle">Modal</h3>
+          <button class="btn ghost" value="cancel" aria-label="Close">✕</button>
+        </header>
+        <div id="modalBody"></div>
+        <footer class="row end gap">
+          <button class="btn ghost" value="cancel">Cancel</button>
+          <button class="btn" id="modalOk" value="default">OK</button>
+        </footer>
+      </form>
+    </dialog>
+  </main>
+
+  <footer class="app-footer">
+    <small>© <span id="year"></span> Novare Enterprises. Free plan up to 15 users. Premium for larger teams.</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
